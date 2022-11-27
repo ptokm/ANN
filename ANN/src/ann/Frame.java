@@ -6,7 +6,6 @@ import java.awt.FlowLayout;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
-import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
@@ -16,10 +15,12 @@ public class Frame extends JFrame {
     private final String SOMETHING_WRONG = "<html><h2>Something went wrong..</h2></html>";
     private final String LOAD_TRAIN_DATASET = "<html><h2>Loading dataset..</h2></html>";
     private final String SUCCESS = "<html><h2>Succeed action!</h2></html>";
+    private final String NEED_DATASETS = "<html><h2>Need to load a dataset first</h2></html>";
     private final MenuBar menuBar;
-    private final Menu menuMenu, datasetMenu;
-    private final MenuItem[] menuItems, datasetItems;
+    private final Menu menuMenu, datasetMenu, algorithmsMenu;
+    private final MenuItem[] menuItems, datasetItems, algorithmsItems;
     private static JLabel label;
+    private boolean loadedDatasets;
     
     Frame(String title) {
         // Configuration of display window
@@ -48,6 +49,13 @@ public class Frame extends JFrame {
         for (short i=0; i< datasetItems.length; i++)
             datasetMenu.add(datasetItems[i]);
         menuBar.add(datasetMenu);
+        
+        algorithmsMenu = new Menu("NETWORKS-ALGORITHMS");
+        algorithmsItems = new MenuItem[1];
+        algorithmsItems[0] = new MenuItem("MLP with Back Propagation (Using Genetic Algorithm)");
+        for (short i=0; i< algorithmsItems.length; i++)
+            algorithmsMenu.add(algorithmsItems[i]);
+        menuBar.add(algorithmsMenu);
         
         setMenuBar(menuBar);
       
@@ -78,14 +86,26 @@ public class Frame extends JFrame {
                     this.setTextLabel(this.LOAD_TRAIN_DATASET);
                     
                     FileOperations fileOperations = new FileOperations();
-                    if (!fileOperations.loadDataset("ionosphere.train"))
-                        this.setTextLabel(this.SOMETHING_WRONG);
-                    else {
-                        if (!fileOperations.loadDataset("ionosphere.test"))
-                            this.setTextLabel(this.SOMETHING_WRONG);
-                        else
-                            this.setTextLabel(this.SUCCESS);
+                    if (!fileOperations.loadDataset("ionosphere.train")) {
+                        this.loadedDatasets = false;
+                        this.setTextLabel(this.SOMETHING_WRONG);   
                     }
+                    else {
+                        if (!fileOperations.loadDataset("ionosphere.test")) {
+                            this.loadedDatasets = false;
+                            this.setTextLabel(this.SOMETHING_WRONG);
+                        }
+                        else {
+                            this.loadedDatasets = true;
+                            this.setTextLabel(this.SUCCESS);
+                        }  
+                    }
+                    
+                    break;
+                }
+                case "MLP with Back Propagation (Using Genetic Algorithm)" -> {
+                    if (!loadedDatasets) 
+                        this.setTextLabel(this.NEED_DATASETS);
                     
                     break;
                 }
