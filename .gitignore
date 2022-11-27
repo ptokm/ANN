@@ -27,3 +27,4 @@ replay_pid*
 *.xml
 *.mf
 *.properties
+/ANN/dist/

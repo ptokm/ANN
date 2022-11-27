@@ -6,15 +6,19 @@ import java.awt.FlowLayout;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 public class Frame extends JFrame {
     private final String HOME_PAGE = "<html><h2>Home page</h2></html>";
     private final String ABOUT_PAGE = "<html><h2>About page</h2></html>";
+    private final String SOMETHING_WRONG = "<html><h2>Something went wrong..</h2></html>";
+    private final String LOAD_TRAIN_DATASET = "<html><h2>Loading dataset..</h2></html>";
+    private final String SUCCESS = "<html><h2>Succeed action!</h2></html>";
     private final MenuBar menuBar;
-    private final Menu menuMenu;
-    private final MenuItem[] menuItems;
+    private final Menu menuMenu, datasetMenu;
+    private final MenuItem[] menuItems, datasetItems;
     private static JLabel label;
     
     Frame(String title) {
@@ -37,14 +41,22 @@ public class Frame extends JFrame {
             menuMenu.add(menuItems[i]);
         }
         menuBar.add(menuMenu);
+        
+        datasetMenu = new Menu("LOAD DATASETS");
+        datasetItems = new MenuItem[1];
+        datasetItems[0] = new MenuItem("ionosphere");
+        for (short i=0; i< datasetItems.length; i++)
+            datasetMenu.add(datasetItems[i]);
+        menuBar.add(datasetMenu);
+        
         setMenuBar(menuBar);
       
         label = new JLabel();
-        setTextLabel("<html><h2>Welcome!</h2></html>");
+        this.setTextLabel("<html><h2>Welcome!</h2></html>");
         this.add(label);
     }
     
-    private static void setTextLabel(String text){
+    private void setTextLabel(String text){
         label.setText(text);
     }
     
@@ -54,8 +66,29 @@ public class Frame extends JFrame {
         if (event.target instanceof MenuItem) {
             String choice = (String)obj;
             switch (choice) {
-                case "Home" -> setTextLabel(this.HOME_PAGE);
-                case "About" -> setTextLabel(this.ABOUT_PAGE);
+                case "Home" ->  {
+                    this.setTextLabel(this.HOME_PAGE);
+                    break;
+                }
+                case "About" ->  {
+                    this.setTextLabel(this.ABOUT_PAGE);
+                    break;
+                }
+                case "ionosphere" ->  {
+                    this.setTextLabel(this.LOAD_TRAIN_DATASET);
+                    
+                    FileOperations fileOperations = new FileOperations();
+                    if (!fileOperations.loadDataset("ionosphere.train"))
+                        this.setTextLabel(this.SOMETHING_WRONG);
+                    else {
+                        if (!fileOperations.loadDataset("ionosphere.test"))
+                            this.setTextLabel(this.SOMETHING_WRONG);
+                        else
+                            this.setTextLabel(this.SUCCESS);
+                    }
+                    
+                    break;
+                }
             }
         }
         else
@@ -63,4 +96,5 @@ public class Frame extends JFrame {
         
         return true;
     }
+    
 }
