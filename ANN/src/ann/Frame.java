@@ -16,6 +16,7 @@ public class Frame extends JFrame {
     private final String LOAD_TRAIN_DATASET = "<html><h2>Loading dataset..</h2></html>";
     private final String SUCCESS = "<html><h2>Succeed action!</h2></html>";
     private final String NEED_DATASETS = "<html><h2>Need to load a dataset first</h2></html>";
+    private final String WAIT_TRAINING = "<html><h2>Wait for training</h2></html>";
     private final MenuBar menuBar;
     private final Menu menuMenu, datasetMenu, algorithmsMenu;
     private final MenuItem[] menuItems, datasetItems, algorithmsItems;
@@ -106,7 +107,36 @@ public class Frame extends JFrame {
                 case "MLP with Back Propagation (Using Genetic Algorithm)" -> {
                     if (!loadedDatasets) 
                         this.setTextLabel(this.NEED_DATASETS);
-                    
+                    else {
+                        this.setTextLabel(this.WAIT_TRAINING);
+                        MLP mlp = new MLP();
+                        Double trainError = mlp.train();
+                        Double testError = mlp.getTestError();
+                        this.setTextLabel(
+                                "<html>"
+                                    + "<h2>"
+                                            + "<br/><br/><br/><br/><br/>"
+                                            + "<table style='font: 16px Arial, Helvetica, sans-serif;;'>"
+                                                + "<tr>"
+                                                    + "<td>"
+                                                        + " Train Error: "
+                                                    + "</td>"
+                                                    + "<td>"
+                                                    + trainError
+                                                    + "<td/>"
+                                                + "<tr/>"
+                                                + "<tr>"
+                                                    + "<td>"
+                                                        + " Test Error: "
+                                                    + "</td>"
+                                                    + "<td>"
+                                                        + testError
+                                                    + "<td/>"
+                                                + "<tr/>"
+                                            +"</table>"
+                                    + "</h2>"
+                                + "</html>");  
+                    }
                     break;
                 }
             }
