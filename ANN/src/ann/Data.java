@@ -8,7 +8,7 @@ public class Data {
     private static int dimension;
     private static int nodes = 10;
     private static double learning_rate = 0.01;
-    private static int max_epoches = 100;
+    private static int max_epoches = 500;
 
     /**
      * @return the trainPatterns
