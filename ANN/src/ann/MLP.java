@@ -145,7 +145,7 @@ public class MLP {
             else {
                 ArrayList <Double> deriv = getDeriv();
                  for (int j = 0; j < this._weights.size(); j++) {
-                   this._weights.set(j, this._weights.get(j) * this._learningRate * deriv.get(j));
+                   this._weights.set(j, this._weights.get(j) - this._learningRate * deriv.get(j));
                 }
             } 
            
