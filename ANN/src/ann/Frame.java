@@ -45,8 +45,10 @@ public class Frame extends JFrame {
         menuBar.add(menuMenu);
         
         datasetMenu = new Menu("LOAD DATASETS");
-        datasetItems = new MenuItem[1];
+        datasetItems = new MenuItem[3];
         datasetItems[0] = new MenuItem("ionosphere");
+        datasetItems[1] = new MenuItem("wine");
+        datasetItems[2] = new MenuItem("iris");
         for (short i=0; i< datasetItems.length; i++)
             datasetMenu.add(datasetItems[i]);
         menuBar.add(datasetMenu);
@@ -93,6 +95,48 @@ public class Frame extends JFrame {
                     }
                     else {
                         if (!fileOperations.loadDataset("ionosphere.test")) {
+                            this.loadedDatasets = false;
+                            this.setTextLabel(this.SOMETHING_WRONG);
+                        }
+                        else {
+                            this.loadedDatasets = true;
+                            this.setTextLabel(this.SUCCESS);
+                        }  
+                    }
+                    
+                    break;
+                }
+                case "wine" ->  {
+                    this.setTextLabel(this.LOAD_TRAIN_DATASET);
+                    
+                    FileOperations fileOperations = new FileOperations();
+                    if (!fileOperations.loadDataset("wine.train")) {
+                        this.loadedDatasets = false;
+                        this.setTextLabel(this.SOMETHING_WRONG);   
+                    }
+                    else {
+                        if (!fileOperations.loadDataset("wine.test")) {
+                            this.loadedDatasets = false;
+                            this.setTextLabel(this.SOMETHING_WRONG);
+                        }
+                        else {
+                            this.loadedDatasets = true;
+                            this.setTextLabel(this.SUCCESS);
+                        }  
+                    }
+                    
+                    break;
+                }
+                case "iris" ->  {
+                    this.setTextLabel(this.LOAD_TRAIN_DATASET);
+                    
+                    FileOperations fileOperations = new FileOperations();
+                    if (!fileOperations.loadDataset("iris.train")) {
+                        this.loadedDatasets = false;
+                        this.setTextLabel(this.SOMETHING_WRONG);   
+                    }
+                    else {
+                        if (!fileOperations.loadDataset("iris.test")) {
                             this.loadedDatasets = false;
                             this.setTextLabel(this.SOMETHING_WRONG);
                         }
