@@ -14,13 +14,19 @@ public class Frame extends JFrame {
     private final String ABOUT_PAGE = "<html><h2>About page</h2></html>";
     private final String SOMETHING_WRONG = "<html><h2>Something went wrong..</h2></html>";
     private final String LOAD_TRAIN_DATASET = "<html><h2>Loading dataset..</h2></html>";
-    private final String SUCCESS = "<html><h2>Succeed action!</h2></html>";
+    private final String SUCCESS_LOAD_IONOSPHERE_DATASETS = "<html><br/><h2>Succeed action!</h2>" +
+                                    "<br/> <h3>Loaded ionosphere dataset.</h3></html>";
+    private final String SUCCESS_LOAD_WINE_DATASETS = "<html><br/><h2>Succeed action!</h2>" +
+                                    "<br/> <h3>Loaded wine dataset.</h3></html>";
+    private final String SUCCESS_LOAD_IRIS_DATASETS = "<html><br/><h2>Succeed action!</h2>" +
+                                    "<br/> <h3>Loaded iris dataset.</h3></html>";
     private final String NEED_DATASETS = "<html><h2>Need to load a dataset first</h2></html>";
     private final String WAIT_TRAINING = "<html><h2>Wait for training</h2></html>";
     private final MenuBar menuBar;
     private final Menu menuMenu, datasetMenu, algorithmsMenu;
     private final MenuItem[] menuItems, datasetItems, algorithmsItems;
     private static JLabel label;
+    private static JLabel datasetNameLabel;
     private boolean loadedDatasets;
     
     Frame(String title) {
@@ -64,7 +70,7 @@ public class Frame extends JFrame {
       
         label = new JLabel();
         this.setTextLabel("<html><h2>Welcome!</h2></html>");
-        this.add(label);
+        this.add(label);  
     }
     
     private void setTextLabel(String text){
@@ -100,7 +106,7 @@ public class Frame extends JFrame {
                         }
                         else {
                             this.loadedDatasets = true;
-                            this.setTextLabel(this.SUCCESS);
+                            this.setTextLabel(this.SUCCESS_LOAD_IONOSPHERE_DATASETS);
                         }  
                     }
                     
@@ -121,7 +127,7 @@ public class Frame extends JFrame {
                         }
                         else {
                             this.loadedDatasets = true;
-                            this.setTextLabel(this.SUCCESS);
+                            this.setTextLabel(this.SUCCESS_LOAD_WINE_DATASETS);
                         }  
                     }
                     
@@ -142,7 +148,7 @@ public class Frame extends JFrame {
                         }
                         else {
                             this.loadedDatasets = true;
-                            this.setTextLabel(this.SUCCESS);
+                            this.setTextLabel(this.SUCCESS_LOAD_IRIS_DATASETS);
                         }  
                     }
                     
