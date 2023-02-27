@@ -216,19 +216,21 @@ public class GeneticAlgorithm {
     }
     
     public ArrayList <Double> getBestChromosome() {
-        this.randomInitializationGenes();
-        this.fitnessFunctions();
-            
         for (int i = 0; i < this._maxEpochs; i++) {
-            this._newPopulation = new ArrayList <>();
-            this.elitism();
-            this.selection();
-            this.mutation();
+            if (i == 0) {
+                this.randomInitializationGenes();
+            }
+            else {
+                this._newPopulation = new ArrayList <>();
+                this.elitism();
+                this.selection();
+                this.mutation();
+
+                this._population = new ArrayList <>(this._newPopulation);
+                this._newPopulation = new ArrayList<>();
+            }
             
-            this._population = new ArrayList <>(this._newPopulation);
-            this._newPopulation = new ArrayList<>();
-        
-             this.fitnessFunctions();
+            this.fitnessFunctions();
             
             //this.displayTrainError(i);
         }
