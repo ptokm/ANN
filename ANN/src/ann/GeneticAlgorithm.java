@@ -229,8 +229,14 @@ public class GeneticAlgorithm {
             this.normalizeFitnessValues();
             this.sortPopulationByFitnessValue();
             this.calculateCumulativeSumOfNormalizedFitnessValues();
+            
+            //this.displayTrainError(i);
         }
         
         return this._population.get(this._population.size() - 1);
+    }
+    
+    private void displayTrainError(int i) {
+        System.out.println("i[" + i + "] = " + this._population.get(this._population.size() - 1).get(this._countGenesOfChromosome));
     }
 }

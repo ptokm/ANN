@@ -144,7 +144,7 @@ public class MLP {
                 }
             }
             
-            System.out.println("Train error: (" + i + ") = " + trainError);
+            //this.displayTrainError(i, trainError);
         }
         
         if (trainError > -1) {
@@ -161,4 +161,7 @@ public class MLP {
         return MLP.getTrainError(Data.getTestPatterns(), this._dimension, this._nodes, this._weights);
     }
     
+    private void displayTrainError(int i, double trainError) {
+        System.out.println("Train error: (" + i + ") = " + trainError);
+    }
 }
