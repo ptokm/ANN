@@ -1,12 +1,11 @@
 package ann;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class MLP {
     private final ArrayList <ArrayList <Double>> _patterns;
     private ArrayList <Double> _uniqueOutputClasses;
-    private final ArrayList <Double> _weights;
+    private ArrayList <Double> _weights;
     private final int _count;
     private final int _nodes;
     private final int _dimension;
@@ -31,13 +30,8 @@ public class MLP {
         int countOfWeightsDimension = (this._dimension + 2) * this._nodes;
         System.out.println("Count of weights: " + countOfWeightsDimension);
         
-        Random r = new Random();
-        double min = -1.0;
-        double max = 1.0;
-        for (int i = 0; i < countOfWeightsDimension; i++) {
-            Double randomValue = min + (max - min) * r.nextDouble();
-            this._weights.add(randomValue);
-        }
+        GeneticAlgorithm ga = new GeneticAlgorithm(countOfWeightsDimension);
+        this._weights = ga.getBestChromosome();
     }
     
     private void findUniqueClasses() {
@@ -140,6 +134,7 @@ public class MLP {
         double trainError = -1;
         for (int i = 0; i < this._maxEpoches; i++) {
             trainError = getTrainError(this._patterns, this._dimension, this._nodes, this._weights);
+            
             if (trainError < 1e-5)
                break;
             else {
@@ -147,8 +142,8 @@ public class MLP {
                  for (int j = 0; j < this._weights.size(); j++) {
                    this._weights.set(j, this._weights.get(j) - this._learningRate * deriv.get(j));
                 }
-            } 
-           
+            }
+            
             System.out.println("Train error: (" + i + ") = " + trainError);
         }
         
