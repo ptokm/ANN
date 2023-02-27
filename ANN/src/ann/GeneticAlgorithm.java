@@ -156,7 +156,7 @@ public class GeneticAlgorithm {
         this._newPopulation.add(child1);
     }
      
-    private void selection() {
+    private void rouletteWheel() {
        while (this._newPopulation.size() != this._population.size()) {
             // Take 2 parants and produce 1 child
             ArrayList <ArrayList <Double>> tempChromosomes = new ArrayList<>();
@@ -203,32 +203,32 @@ public class GeneticAlgorithm {
         }
     }
     
-    private void rouletteWheel() {
-        this.selection();
+    private void selection() {
+        this.rouletteWheel();
     }
     
-    public ArrayList <Double> getBestChromosome() {
-        this.randomInitializationGenes();
+    private void fitnessFunctions() {
         this.calculateFitness();
         this.fitnessScaling();
         this.normalizeFitnessValues();
         this.sortPopulationByFitnessValue();
         this.calculateCumulativeSumOfNormalizedFitnessValues();
+    }
+    
+    public ArrayList <Double> getBestChromosome() {
+        this.randomInitializationGenes();
+        this.fitnessFunctions();
             
         for (int i = 0; i < this._maxEpochs; i++) {
             this._newPopulation = new ArrayList <>();
             this.elitism();
-            this.rouletteWheel();
+            this.selection();
             this.mutation();
             
             this._population = new ArrayList <>(this._newPopulation);
             this._newPopulation = new ArrayList<>();
         
-            this.calculateFitness();
-            this.fitnessScaling();
-            this.normalizeFitnessValues();
-            this.sortPopulationByFitnessValue();
-            this.calculateCumulativeSumOfNormalizedFitnessValues();
+             this.fitnessFunctions();
             
             //this.displayTrainError(i);
         }
