@@ -14,13 +14,17 @@ public class Frame extends JFrame {
     private final String ABOUT_PAGE = "<html><h2>About page</h2></html>";
     private final String SOMETHING_WRONG = "<html><h2>Something went wrong..</h2></html>";
     private final String LOAD_TRAIN_DATASET = "<html><h2>Loading dataset..</h2></html>";
+    private final String LOAD_CUSTOM_TRAIN_DATASET = "<html><h2>Loading train dataset..</h2></html>";
+    private final String LOAD_CUSTOM_TEST_DATASET = "<html><h2>Loading test dataset..</h2></html>";
     private final String SUCCESS_LOAD_IONOSPHERE_DATASETS = "<html><br/><h2>Succeed action!</h2>" +
                                     "<br/> <h3>Loaded ionosphere dataset.</h3></html>";
     private final String SUCCESS_LOAD_WINE_DATASETS = "<html><br/><h2>Succeed action!</h2>" +
                                     "<br/> <h3>Loaded wine dataset.</h3></html>";
     private final String SUCCESS_LOAD_IRIS_DATASETS = "<html><br/><h2>Succeed action!</h2>" +
                                     "<br/> <h3>Loaded iris dataset.</h3></html>";
+    private final String SUCCESS_LOAD_CUSTOM_DATASETS = "<html><br/><h2>Succeed action!</h2></html>";
     private final String NEED_DATASETS = "<html><h2>Need to load a dataset first</h2></html>";
+    private final String NEED_TRAIN_DATASETS = "<html><h2>Need to load a train dataset first</h2></html>";
     private final String WAIT_TRAINING = "<html><h2>Wait for training</h2></html>";
     private final MenuBar menuBar;
     private final Menu menuMenu, datasetMenu, algorithmsMenu;
@@ -51,10 +55,12 @@ public class Frame extends JFrame {
         menuBar.add(menuMenu);
         
         datasetMenu = new Menu("LOAD DATASETS");
-        datasetItems = new MenuItem[3];
+        datasetItems = new MenuItem[5];
         datasetItems[0] = new MenuItem("ionosphere");
         datasetItems[1] = new MenuItem("wine");
         datasetItems[2] = new MenuItem("iris");
+        datasetItems[3] = new MenuItem("Load train dataset");
+        datasetItems[4] = new MenuItem("Load test dataset");
         for (short i=0; i< datasetItems.length; i++)
             datasetMenu.add(datasetItems[i]);
         menuBar.add(datasetMenu);
@@ -162,6 +168,7 @@ public class Frame extends JFrame {
                         MLP mlp = new MLP();
                         Double trainError = mlp.train();
                         Double testError = mlp.getTestError();
+                        String testErrorDisplay = (testError == -1.0) ? "No test dataset" : testError.toString();
                         this.setTextLabel(
                                 "<html>"
                                     + "<h2>"
@@ -180,12 +187,42 @@ public class Frame extends JFrame {
                                                         + " Test Error: "
                                                     + "</td>"
                                                     + "<td>"
-                                                        + testError
+                                                        + testErrorDisplay
                                                     + "<td/>"
                                                 + "<tr/>"
                                             +"</table>"
                                     + "</h2>"
                                 + "</html>");  
+                    }
+                    break;
+                }
+                case "Load train dataset" ->  {
+                    this.setTextLabel(this.LOAD_CUSTOM_TRAIN_DATASET);
+                    FileOperations fileOperations = new FileOperations();
+                    if (fileOperations.chooseDatasetToLoad()) {
+                        this.loadedDatasets = true;
+                        this.setTextLabel(this.SUCCESS_LOAD_CUSTOM_DATASETS);
+                    }
+                    else {
+                        this.loadedDatasets = false;
+                        this.setTextLabel(this.SOMETHING_WRONG);
+                    }
+                    
+                    break;
+                }
+                case "Load test dataset" ->  {
+                    if (this.loadedDatasets) {
+                        this.setTextLabel(this.LOAD_CUSTOM_TEST_DATASET);
+                        FileOperations fileOperations = new FileOperations();
+                        if (fileOperations.chooseDatasetToLoad()) {
+                            this.setTextLabel(this.SUCCESS_LOAD_CUSTOM_DATASETS);
+                        }
+                        else {
+                            this.setTextLabel(this.SOMETHING_WRONG);
+                        }
+                    }
+                    else {
+                        this.setTextLabel(this.NEED_TRAIN_DATASETS);
                     }
                     break;
                 }

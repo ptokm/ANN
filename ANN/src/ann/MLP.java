@@ -158,7 +158,14 @@ public class MLP {
     }
     
     public double getTestError() {
-        return MLP.getTrainError(Data.getTestPatterns(), this._dimension, this._nodes, this._weights);
+        ArrayList <ArrayList <Double>> testPatterns = Data.getTestPatterns();
+        if (testPatterns != null) {
+            return MLP.getTrainError(testPatterns, this._dimension, this._nodes, this._weights);
+        }
+        else {
+            return -1.0;
+        }
+        
     }
     
     private void displayTrainError(int i, double trainError) {

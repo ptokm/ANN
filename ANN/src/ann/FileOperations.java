@@ -4,8 +4,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Scanner;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
-public class FileOperations {
+public class FileOperations extends JFrame {
     
     public boolean loadDataset(String fileName) {
         if (fileName.isEmpty())
@@ -50,8 +53,15 @@ public class FileOperations {
                     Data.setTrainPatterns(patterns);
                     Data.setDimension(dimension - 1); // The last column is the output class of pattern
                 }
-                else if (isValid && fileName.endsWith(".test"))
-                    Data.setTestPatterns(patterns);
+                else if (isValid && fileName.endsWith(".test")) {
+                    if ((dimension -1) == Data.getDimension()) {
+                        Data.setTestPatterns(patterns);
+                    }
+                    else {
+                        isValid = false;
+                    }
+                     
+                }
                     
                 return isValid;
             }
@@ -61,4 +71,23 @@ public class FileOperations {
         }
     }
     
+    public boolean chooseDatasetToLoad() {
+        // Permisions for MAC devices to see files in Download folder
+        System.setProperty("apple.awt.fileDialogForDirectories", "true");
+        
+        // Prompt the user to choose a .txt file from his system
+        JFileChooser chooser=new JFileChooser();
+        int returnVal = chooser.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            String filename = chooser.getSelectedFile().getAbsolutePath();
+            if (this.loadDataset(filename)) {
+               return true; 
+            }
+            else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 }
