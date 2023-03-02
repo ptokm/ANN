@@ -30,7 +30,6 @@ public class Frame extends JFrame {
     private final Menu menuMenu, datasetMenu, algorithmsMenu;
     private final MenuItem[] menuItems, datasetItems, algorithmsItems;
     private static JLabel label;
-    private static JLabel datasetNameLabel;
     private boolean loadedDatasets;
     
     Frame(String title) {

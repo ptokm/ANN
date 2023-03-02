@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 public class FileOperations extends JFrame {
     
@@ -80,12 +79,7 @@ public class FileOperations extends JFrame {
         int returnVal = chooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             String filename = chooser.getSelectedFile().getAbsolutePath();
-            if (this.loadDataset(filename)) {
-               return true; 
-            }
-            else {
-                return false;
-            }
+            return this.loadDataset(filename);
         } else {
             return false;
         }
